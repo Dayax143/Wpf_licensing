@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "Wpf_Licensing(registy)/1.0.0": {
+        "runtime": {
+          "Wpf_Licensing(registy).dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Wpf_Licensing(registy)/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
