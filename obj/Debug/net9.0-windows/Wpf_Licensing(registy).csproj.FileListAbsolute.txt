@@ -18,3 +18,4 @@ F:\Software Development\HWA DEV\Wpf_Licensing(registy)\Wpf_Licensing(registy)\ob
 F:\Software Development\HWA DEV\Wpf_Licensing(registy)\Wpf_Licensing(registy)\obj\Debug\net9.0-windows\Wpf_Licensing(registy).pdb
 F:\Software Development\HWA DEV\Wpf_Licensing(registy)\Wpf_Licensing(registy)\obj\Debug\net9.0-windows\Wpf_Licensing(registy).genruntimeconfig.cache
 F:\Software Development\HWA DEV\Wpf_Licensing(registy)\Wpf_Licensing(registy)\obj\Debug\net9.0-windows\ref\Wpf_Licensing(registy).dll
+F:\Software Development\HWA DEV\Wpf_Licensing(registy)\Wpf_Licensing(registy)\obj\Debug\net9.0-windows\Wpf_Licensing(registy).sourcelink.json

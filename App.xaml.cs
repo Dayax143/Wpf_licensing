@@ -15,23 +15,44 @@ namespace Wpf_Licensing_registy_
             return key?.GetValue("LicenseKey") != null;
         }
 
-        private string GetStoredLicense()
-        {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\MyWpfApp");
-            return key?.GetValue("LicenseKey")?.ToString();
-        }
-
         private void SaveLicenseToRegistry(string licenseKey)
         {
             RegistryKey key = Registry.CurrentUser.CreateSubKey(@"Software\MyWpfApp");
             key.SetValue("LicenseKey", licenseKey);
+            key.SetValue("LicenseDate", DateTime.Now.ToString("yyyy-MM-dd"));
             key.Close();
         }
 
+
+        private bool IsLicenseExpired()
+        {
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\MyWpfApp");
+            if (key == null) return true;
+
+            object dateValue = key.GetValue("LicenseDate");
+            if (dateValue == null) return true;
+
+            DateTime installDate;
+            if (!DateTime.TryParse(dateValue.ToString(), out installDate)) return true;
+
+            return (DateTime.Now - installDate).TotalDays > 30; // Expired if more than 30 days
+        }
+
+
         private bool IsLicenseValid(string inputKey)
         {
-            const string expectedKey = "WPF-KEY-2025-VAL"; // You can hash or validate more securely
-            return inputKey == expectedKey;
+            //const string expectedKey = "WPF-KEY-2025-VALID"; // You can hash or validate more securely
+
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\MyWpfApp");
+            if (key == null) return true;
+            object dateValue = key.GetValue("LicenseDate");
+
+            if (dateValue == null) return true;
+
+            DateTime installDate;
+            if (!DateTime.TryParse(dateValue.ToString(), out installDate)) return true;
+
+            return (DateTime.Now - installDate).TotalDays > 30; // Expired if more than 30 days
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -42,8 +63,7 @@ namespace Wpf_Licensing_registy_
             {
                 string enteredKey = Microsoft.VisualBasic.Interaction.InputBox(
                     "Enter your license key to activate the application:",
-                    "License Activation",
-                    "", -1, -1);
+                    "License Activation", "", -1, -1);
 
                 if (string.IsNullOrWhiteSpace(enteredKey) || !IsLicenseValid(enteredKey))
                 {
@@ -52,18 +72,13 @@ namespace Wpf_Licensing_registy_
                 }
 
                 SaveLicenseToRegistry(enteredKey);
-                MessageBox.Show("License activated successfully!");
+                MessageBox.Show("License registered successfully.");
             }
-            else
+            else if (IsLicenseExpired())
             {
-                string savedKey = GetStoredLicense();
-                if (!IsLicenseValid(savedKey))
-                {
-                    MessageBox.Show("Stored license is invalid. Application will now close.");
-                    Environment.Exit(0);
-                }
+                MessageBox.Show("Your license has expired already");
+                Environment.Exit(0);
             }
-
             // Proceed with loading your main window or dashboard
             // new MainWindow().Show();
         }
